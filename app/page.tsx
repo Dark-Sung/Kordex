@@ -248,6 +248,80 @@ export default function Home() {
                     </div>
                 </div>
             </section>
+            <section id="funciones" className={styles.featuresSection}>
+    <div className={styles.wrapper}>
+
+        <h2 className={styles.sectionTitle}>
+            Lo que necesitas para<br />
+            llevar el control día a día
+        </h2>
+
+        <div className={styles.featuresGrid}>
+
+            <article className={styles.featureCard}>
+                <p className={styles.featureLabel}>VARIANTES</p>
+                <h3>Un producto, muchas versiones</h3>
+                <p>
+                    Agrega variantes de distinta marca y modelo
+                    a un mismo registro, por ejemplo varios
+                    televisores bajo «Televisor». El principal
+                    suma el total de sus variantes.
+                </p>
+            </article>
+
+            <article className={styles.featureCard}>
+                <p className={styles.featureLabel}>ALERTAS</p>
+                <h3>Lo urgente aparece primero</h3>
+                <p>
+                    Las tiendas ven «Por reponer» y las
+                    organizaciones ven «Requieren atención»,
+                    calculado sobre cada variante.
+                </p>
+            </article>
+
+            <article className={styles.featureCard}>
+                <p className={styles.featureLabel}>HISTORIAL</p>
+                <h3>Cada cambio queda registrado</h3>
+                <p>
+                    Movimientos de entrada, salida y ajuste,
+                    o cambios de un elemento, siempre con
+                    quién lo hizo y cuándo.
+                </p>
+            </article>
+
+            <article className={styles.featureCard}>
+                <p className={styles.featureLabel}>FOTOS</p>
+                <h3>Reconoce cada elemento</h3>
+                <p>
+                    Sube una foto JPG, PNG o WebP de hasta
+                    4 MB con vista previa, y cámbiala o
+                    quítala cuando quieras.
+                </p>
+            </article>
+
+            <article className={styles.featureCard}>
+                <p className={styles.featureLabel}>BÚSQUEDA</p>
+                <h3>Encuentra y filtra rápido</h3>
+                <p>
+                    Busca por nombre o código, filtra por
+                    categoría y organiza tu catálogo con
+                    tus propias categorías.
+                </p>
+            </article>
+
+            <article className={styles.featureCard}>
+                <p className={styles.featureLabel}>EXPORTAR</p>
+                <h3>Tus datos, en CSV</h3>
+                <p>
+                    Descarga todo el inventario con un clic
+                    para llevarlo a una hoja de cálculo
+                    o respaldarlo.
+                </p>
+            </article>
+
+        </div>
+    </div>
+</section>
         </main>
     );
 }
