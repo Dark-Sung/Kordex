@@ -309,6 +309,9 @@ th.num {
 .feed li:last-child {
   border-bottom: 0;
 }
+.feed li > .badge {
+  align-self: flex-start;
+}
 .feed .delta {
   min-width: 3.2rem;
   text-align: right;
