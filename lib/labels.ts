@@ -31,7 +31,7 @@ const tienda: Labels = {
   singular: "producto",
   plural: "Productos",
   newItem: "Nuevo producto",
-  code: "SKU",
+  code: "ID",
   qty: "Stock",
   move: { entrada: "Entrada", salida: "Salida", ajuste: "Ajuste" },
   moveOption: {
@@ -47,7 +47,7 @@ const organizacion: Labels = {
   singular: "elemento",
   plural: "Elementos",
   newItem: "Nuevo elemento",
-  code: "Código",
+  code: "ID",
   qty: "Cantidad",
   move: { entrada: "Alta", salida: "Baja", ajuste: "Ajuste" },
   moveOption: {

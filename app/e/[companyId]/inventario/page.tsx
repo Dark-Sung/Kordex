@@ -58,7 +58,7 @@ export default async function InventarioPage({
       </header>
 
       <form method="get" className="filters">
-        <input type="search" name="q" defaultValue={q} placeholder="Buscar por nombre, código, marca o ubicación" aria-label="Buscar" />
+        <input type="search" name="q" defaultValue={q} placeholder="Buscar por nombre, ID, marca o ubicación" aria-label="Buscar" />
         <select name="cat" defaultValue={cat} aria-label="Categoría">
           <option value="">Todas las categorías</option>
           {categories.map((c) => (

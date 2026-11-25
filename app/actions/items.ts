@@ -31,8 +31,8 @@ function parseItem(
   const brand = text(fd, "brand");
   const model = text(fd, "model");
 
-  if (!code) return { error: `Escribe el ${type === "tienda" ? "SKU" : "código"}.` };
-  if (code.length > 40) return { error: "El código es demasiado largo (máximo 40 caracteres)." };
+  if (!code) return { error: `Escribe el ID.` };
+  if (code.length > 40) return { error: "El ID es demasiado largo (máximo 40 caracteres)." };
   if (!name) return { error: "Escribe el nombre." };
   if (name.length > 120) return { error: "El nombre es demasiado largo (máximo 120 caracteres)." };
   if (!categoryId && !opts.categoryFromParent) return { error: "Elige una categoría." };
@@ -125,7 +125,7 @@ export async function createItem(companyId: string, _prev: FormState, fd: FormDa
       data.categoryId = parent.categoryId;
     }
     if (db.items.some((i) => i.companyId === companyId && i.code.toLowerCase() === data.code.toLowerCase()))
-      return { error: "Ya existe un registro con ese código." };
+      return { error: "Ya existe un registro con ese ID." };
     if (!db.categories.some((c) => c.companyId === companyId && c.id === data.categoryId))
       return { error: "La categoría elegida ya no existe." };
 
@@ -205,7 +205,7 @@ export async function updateItem(
       if (parent) data.categoryId = parent.categoryId;
     }
     if (db.items.some((i) => i.companyId === companyId && i.id !== itemId && i.code.toLowerCase() === data.code.toLowerCase()))
-      return { error: "Ya existe otro registro con ese código." };
+      return { error: "Ya existe otro registro con ese ID." };
     if (!db.categories.some((c) => c.companyId === companyId && c.id === data.categoryId))
       return { error: "La categoría elegida ya no existe." };
 
