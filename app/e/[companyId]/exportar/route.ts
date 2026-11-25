@@ -5,9 +5,11 @@ import { intervalText } from "@/lib/maintenance";
 
 export const dynamic = "force-dynamic";
 
+const delimiter = ";";
+
 function cell(value: string | number): string {
-  const s = String(value);
-  return /[",\n\r;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  if (typeof value === "number") return String(value).replace(".", ",");
+  return /["\n\r;]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;
 }
 
 export async function GET(_req: Request, { params }: { params: Promise<{ companyId: string }> }) {
@@ -47,11 +49,11 @@ export async function GET(_req: Request, { params }: { params: Promise<{ company
         ]
     )
       .map(cell)
-      .join(","),
+      .join(delimiter),
   );
 
-  // BOM para que Excel abra bien las tildes.
-  const csv = "\uFEFF" + [header.map(cell).join(","), ...lines].join("\r\n");
+  // Excel en español usa coma decimal y punto y coma entre columnas.
+  const csv = "\uFEFF" + [header.map(cell).join(delimiter), ...lines].join("\r\n");
   const date = new Date().toISOString().slice(0, 10);
   const slug = ctx.company.name
     .normalize("NFD")
