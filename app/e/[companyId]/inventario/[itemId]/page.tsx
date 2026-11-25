@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { confirmMaintenance, deleteItem, registerMaintenance, registerMovement, updateItem } from "@/app/actions/items";
 import ActionForm from "@/components/ActionForm";
 import ChangeList from "@/components/ChangeList";
+import CopyItemId from "@/components/CopyItemId";
 import ItemFields from "@/components/ItemFields";
 import ItemThumb from "@/components/ItemThumb";
 import MaintenanceBadge from "@/components/MaintenanceBadge";
@@ -48,7 +49,9 @@ export default async function ItemPage({ params }: { params: Promise<{ companyId
           <div>
             <h1>{item.name}</h1>
             <p className="muted">
-              {item.code} · {category?.name ?? "Sin categoría"}
+              {item.code}{" "}
+              <CopyItemId key={item.code} code={item.code} />
+              {" · "}{category?.name ?? "Sin categoría"}
               {bm ? ` · ${bm}` : ""}
               {item.location ? ` · ${item.location}` : ""}
             </p>
