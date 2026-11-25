@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+next-env.d.ts
+*.tsbuildinfo
+/data/inventario.db
+/data/inventario.db-wal
+/data/inventario.db-shm
+/data/db.json
+/data/db.json.tmp
+/data/db.anterior-*.json
+/data/db.migrado-*.json
+/data/uploads
+.env*.local
+.DS_Store
