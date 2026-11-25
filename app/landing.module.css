@@ -466,3 +466,141 @@
         padding: 55px 0;
     }
 }
+/* SECCIÓN DE MANTENIMIENTO */
+
+.maintenanceSection {
+    background: #26005c;
+    color: #ffffff;
+    padding: 85px 0;
+}
+
+.maintenanceGrid {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    align-items: center;
+    gap: 55px;
+}
+
+.maintenanceLabel {
+    color: #c6a5ff;
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.maintenanceInfo h2 {
+    color: #ffffff;
+    font-size: clamp(28px, 3vw, 40px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -1px;
+    margin-bottom: 24px;
+}
+
+.maintenanceInfo > p:not(.maintenanceLabel) {
+    color: #e0d4f5;
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 18px;
+}
+
+.maintenanceCard {
+    background: #ffffff;
+    color: #180d35;
+    border-radius: 10px;
+    padding: 24px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.maintenanceCardTitle {
+    color: #625b70;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+}
+
+.maintenanceRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    padding: 18px 0;
+    border-top: 1px solid #e5dfef;
+}
+
+.maintenanceRow strong {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.maintenanceRow small {
+    display: block;
+    color: #625b70;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.maintenanceActions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.overdue,
+.upcoming,
+.upToDate {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 10px;
+    border-radius: 20px;
+}
+
+.overdue {
+    background: #ffe0e0;
+    color: #b3392f;
+}
+
+.upcoming {
+    background: #fff0d5;
+    color: #a36300;
+}
+
+.upToDate {
+    background: #dcf5e7;
+    color: #18794e;
+}
+
+.doneButton {
+    border: 1px solid #6200ff;
+    color: #6200ff;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+    .maintenanceGrid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+
+    .maintenanceSection {
+        padding: 55px 0;
+    }
+}
+
+@media (max-width: 500px) {
+    .maintenanceRow {
+        flex-wrap: wrap;
+    }
+
+    .maintenanceCard {
+        padding: 18px;
+    }
+}
