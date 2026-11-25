@@ -101,7 +101,7 @@ export default function Home() {
                             <div className={styles.product}>
                                 <div>
                                     <strong>
-                                        Tornillo drywall 1¼" (caja x100)
+                                        Tornillo drywall 1¼&quot; (caja x100)
                                     </strong>
                                     <small>FER-0310</small>
                                 </div>
@@ -156,6 +156,98 @@ export default function Home() {
                     </div>
                 </section>
             </div>
+
+            {/* TIPOS DE INVENTARIO */}
+
+            <section
+                id="tipos-inventario"
+                className={styles.inventorySection}
+            >
+                <div className={styles.wrapper}>
+
+                    <h2 className={styles.sectionTitle}>
+                        Dos tipos de inventario, cada<br />
+                        uno con sus propios campos
+                    </h2>
+
+                    <p className={styles.sectionDescription}>
+                        Al registrar la empresa eliges el tipo.
+                        La pantalla de resumen, los campos y el
+                        historial se adaptan a lo que realmente
+                        necesitas.
+                    </p>
+
+                    <div className={styles.inventoryGrid}>
+
+                        <article className={styles.storeCard}>
+                            <p className={styles.cardLabel}>
+                                TIENDA
+                            </p>
+
+                            <h3>
+                                Para negocios que venden productos
+                            </h3>
+
+                            <p>
+                                Controla costo, precio de venta y
+                                stock mínimo, y recibe la lista
+                                de lo que toca reponer.
+                            </p>
+
+                            <ul>
+                                <li>
+                                    SKU, costo, precio, stock y stock mínimo
+                                </li>
+                                <li>
+                                    Valor total del inventario en el resumen
+                                </li>
+                                <li>
+                                    Lista «Por reponer» según el mínimo
+                                    de cada producto
+                                </li>
+                                <li>
+                                    Movimientos: entradas, salidas y ajustes,
+                                    con quién los registró
+                                </li>
+                            </ul>
+                        </article>
+
+                        <article className={styles.organizationCard}>
+                            <p className={styles.cardLabel}>
+                                ORGANIZACIÓN
+                            </p>
+
+                            <h3>
+                                Para equipos con elementos de trabajo
+                            </h3>
+
+                            <p>
+                                Fundaciones, colegios, laboratorios
+                                o equipos que inventarían equipos y
+                                herramientas, sin precios ni ventas.
+                            </p>
+
+                            <ul>
+                                <li>
+                                    Código, cantidad, estado,
+                                    responsable y serial
+                                </li>
+                                <li>
+                                    Ubicación y notas de cada elemento
+                                </li>
+                                <li>
+                                    Lista «Requieren atención» en el resumen
+                                </li>
+                                <li>
+                                    Mantenimiento periódico e historial
+                                    de cambios
+                                </li>
+                            </ul>
+                        </article>
+
+                    </div>
+                </div>
+            </section>
         </main>
     );
 }
