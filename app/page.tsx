@@ -425,6 +425,82 @@ export default function Home() {
         </div>
     </div>
 </section>
+         <section id="equipo" className={styles.teamSection}>
+    <div className={styles.wrapper}>
+        <div className={styles.teamGrid}>
+
+            <div className={styles.teamInfo}>
+                <h2 className={styles.sectionTitle}>
+                    Una cuenta, varias empresas, cada persona con su rol
+                </h2>
+
+                <p>
+                    Una misma cuenta puede pertenecer a varias
+                    empresas con un rol distinto en cada una.
+                    Agregas a tu equipo con el correo de su cuenta.
+                </p>
+
+                <ul>
+                    <li>
+                        Contraseñas protegidas con scrypt y
+                        sesión en cookie httpOnly.
+                    </li>
+
+                    <li>
+                        Bloqueo de 15 minutos tras 5 intentos
+                        fallidos con un mismo correo.
+                    </li>
+
+                    <li>
+                        Permisos revisados en el servidor,
+                        no solo ocultos en pantalla.
+                    </li>
+
+                    <li>
+                        Fotos visibles únicamente para las
+                        personas de esa empresa.
+                    </li>
+                </ul>
+            </div>
+
+            <div className={styles.rolesTable}>
+
+                <div className={styles.roleRow}>
+                    <h3>Propietario</h3>
+                    <p>
+                        Control total: equipo, ajustes de
+                        la empresa y eliminarla.
+                    </p>
+                </div>
+
+                <div className={styles.roleRow}>
+                    <h3>Administrador</h3>
+                    <p>
+                        Gestiona inventario, categorías y
+                        el equipo (operadores y consulta).
+                    </p>
+                </div>
+
+                <div className={styles.roleRow}>
+                    <h3>Operador</h3>
+                    <p>
+                        Crea y edita registros, anota movimientos
+                        y confirma mantenimientos. No elimina.
+                    </p>
+                </div>
+
+                <div className={styles.roleRow}>
+                    <h3>Solo consulta</h3>
+                    <p>
+                        Ve el inventario y descarga el CSV,
+                        sin poder modificar nada.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
         </main>
     );
 }
