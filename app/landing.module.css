@@ -694,3 +694,125 @@
         padding: 20px 0;
     }
 }
+/* SECCIÓN DE REGISTRO */
+
+.ctaSection {
+    background: #ffffff;
+    padding: 20px 0 70px;
+}
+
+.ctaCard {
+    background: #6200ff;
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 45px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 35px;
+}
+
+.ctaInfo h2 {
+    font-size: clamp(25px, 3vw, 34px);
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 12px;
+}
+
+.ctaInfo p {
+    color: #e9ddff;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.ctaActions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.ctaPrimary,
+.ctaSecondary {
+    display: inline-block;
+    padding: 14px 22px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.2s;
+}
+
+.ctaPrimary {
+    background: #ffffff;
+    color: #6200ff;
+    border: 1px solid #ffffff;
+}
+
+.ctaPrimary:hover {
+    background: #e9ddff;
+}
+
+.ctaSecondary {
+    border: 1px solid #ffffff;
+    color: #ffffff;
+}
+
+.ctaSecondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.ctaCard a:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 4px;
+}
+
+/* PIE DE PÁGINA */
+
+.footer {
+    background: #ffffff;
+    border-top: 1px solid #e5dfef;
+    padding: 28px 0;
+}
+
+.footerContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.footerContent strong {
+    color: #26005c;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.footerContent p {
+    color: #625b70;
+    font-size: 13px;
+}
+
+/* ADAPTACIÓN A PANTALLAS PEQUEÑAS */
+
+@media (max-width: 900px) {
+    .ctaCard {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 30px;
+    }
+}
+
+@media (max-width: 500px) {
+    .ctaActions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .footerContent {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+}
