@@ -19,15 +19,17 @@ export default function Home() {
                         />
                     </div>
 
-                    <nav className={styles.nav}>
-                        <Link href="/iniciar-sesion">
-                            Iniciar sesión
-                        </Link>
+                           <nav className={styles.nav}>
+                            <Link href="#tipos-inventario">Tipos de inventario</Link>
 
-                        <Link href="/registro">
-                            Crear cuenta
-                        </Link>
-                    </nav>
+                             <Link href="#funciones">Funciones</Link>
+
+                             <Link href="#mantenimiento">Mantenimiento</Link>
+
+                            <Link href="#equipo">Equipo y roles</Link>
+
+                             <Link href="/iniciar-sesion">Iniciar sesión</Link>
+                         </nav>
                 </header>
 
                 <section className={styles.hero}>
@@ -59,11 +61,8 @@ export default function Home() {
                                 Crear cuenta
                             </Link>
 
-                            <Link
-                                href="/iniciar-sesion"
-                                className={styles.secondaryButton}
-                            >
-                                Iniciar sesión
+                            <Link href="/iniciar-sesion" className={styles.secondaryButton}>
+                              Iniciar sesión
                             </Link>
                         </div>
 
@@ -425,6 +424,126 @@ export default function Home() {
         </div>
     </div>
 </section>
+         <section id="equipo" className={styles.teamSection}>
+    <div className={styles.wrapper}>
+        <div className={styles.teamGrid}>
+
+            <div className={styles.teamInfo}>
+                <h2 className={styles.sectionTitle}>
+                    Una cuenta, varias empresas, cada persona con su rol
+                </h2>
+
+                <p>
+                    Una misma cuenta puede pertenecer a varias
+                    empresas con un rol distinto en cada una.
+                    Agregas a tu equipo con el correo de su cuenta.
+                </p>
+
+                <ul>
+                    <li>
+                        Contraseñas protegidas con scrypt y
+                        sesión en cookie httpOnly.
+                    </li>
+
+                    <li>
+                        Bloqueo de 15 minutos tras 5 intentos
+                        fallidos con un mismo correo.
+                    </li>
+
+                    <li>
+                        Permisos revisados en el servidor,
+                        no solo ocultos en pantalla.
+                    </li>
+
+                    <li>
+                        Fotos visibles únicamente para las
+                        personas de esa empresa.
+                    </li>
+                </ul>
+            </div>
+
+            <div className={styles.rolesTable}>
+
+                <div className={styles.roleRow}>
+                    <h3>Propietario</h3>
+                    <p>
+                        Control total: equipo, ajustes de
+                        la empresa y eliminarla.
+                    </p>
+                </div>
+
+                <div className={styles.roleRow}>
+                    <h3>Administrador</h3>
+                    <p>
+                        Gestiona inventario, categorías y
+                        el equipo (operadores y consulta).
+                    </p>
+                </div>
+
+                <div className={styles.roleRow}>
+                    <h3>Operador</h3>
+                    <p>
+                        Crea y edita registros, anota movimientos
+                        y confirma mantenimientos. No elimina.
+                    </p>
+                </div>
+
+                <div className={styles.roleRow}>
+                    <h3>Solo consulta</h3>
+                    <p>
+                        Ve el inventario y descarga el CSV,
+                        sin poder modificar nada.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+      <section className={styles.ctaSection}>
+    <div className={styles.wrapper}>
+        <div className={styles.ctaCard}>
+
+            <div className={styles.ctaInfo}>
+                <h2>Empieza con tu primer inventario</h2>
+
+                <p>
+                    Crea tu cuenta, registra tu empresa y elige
+                    si es una tienda o una organización.
+                </p>
+            </div>
+
+            <div className={styles.ctaActions}>
+                <Link
+                    href="/registro"
+                    className={styles.ctaPrimary}
+                >
+                    Crear cuenta
+                </Link>
+
+                <Link
+                    href="/iniciar-sesion"
+                    className={styles.ctaSecondary}
+                >
+                    Iniciar sesión
+                </Link>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<footer className={styles.footer}>
+    <div className={styles.wrapper}>
+        <div className={styles.footerContent}>
+            <strong>Kordex</strong>
+
+            <p>
+                Control de inventario para tiendas y organizaciones.
+            </p>
+        </div>
+    </div>
+</footer>
         </main>
     );
 }
