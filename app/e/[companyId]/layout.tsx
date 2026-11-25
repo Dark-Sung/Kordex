@@ -25,7 +25,7 @@ export default async function CompanyLayout({
         companyName={company.name}
         typeName={typeInfo[company.type].name}
         roleLabel={roleLabels[role]}
-        userName={user.name}
+        user={{ id: user.id, name: user.name, photo: user.photo }}
         exportHref={`${root}/exportar`}
         nav={[
           { href: root, label: "Resumen" },

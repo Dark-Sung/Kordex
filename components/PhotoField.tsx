@@ -5,7 +5,7 @@ import { useState } from "react";
 const MAX_BYTES = 4 * 1024 * 1024;
 
 // Campo de foto con vista previa y opción de quitar la foto actual
-export default function PhotoField({ currentUrl }: { currentUrl?: string }) {
+export default function PhotoField({ currentUrl, label = "Foto de referencia (opcional)" }: { currentUrl?: string; label?: string }) {
   const [preview, setPreview] = useState<string | null>(null);
   const [remove, setRemove] = useState(false);
   const [problem, setProblem] = useState<string | null>(null);
@@ -14,7 +14,7 @@ export default function PhotoField({ currentUrl }: { currentUrl?: string }) {
 
   return (
     <div className="field wide photo-field">
-      <span>Foto de referencia (opcional)</span>
+      <span>{label}</span>
       <div className="photo-row">
         <div className="photo-box">
           {shown ? (
@@ -27,6 +27,7 @@ export default function PhotoField({ currentUrl }: { currentUrl?: string }) {
         <div className="photo-controls">
           <input
             type="file"
+            aria-label={label}
             name="photo"
             accept="image/jpeg,image/png,image/webp"
             onChange={(e) => {

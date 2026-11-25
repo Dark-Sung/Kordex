@@ -14,14 +14,18 @@ const hashToken = (token: string) => createHash("sha256").update(token).digest("
 export const NO_PERMISSION = "No tienes permiso para hacer esto en esta empresa.";
 
 // Crea una sesión nueva y deposita la cookie en el navegador
-export async function startSession(userId: string): Promise<void> {
+export async function startSession(userId: string, expectedPasswordHash?: string): Promise<boolean> {
   const token = randomBytes(32).toString("hex");
   const expires = new Date(Date.now() + SESSION_DAYS * 86_400_000);
-  await mutate((db) => {
+  const started = await mutate((db) => {
+    const user = db.users.find((entry) => entry.id === userId);
+    if (!user || (expectedPasswordHash !== undefined && user.passwordHash !== expectedPasswordHash)) return false;
     const now = new Date().toISOString();
     db.sessions = db.sessions.filter((s) => s.expiresAt > now);
     db.sessions.push({ tokenHash: hashToken(token), userId, expiresAt: expires.toISOString() });
+    return true;
   });
+  if (!started) return false;
   (await cookies()).set(COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
@@ -29,6 +33,7 @@ export async function startSession(userId: string): Promise<void> {
     path: "/",
     expires,
   });
+  return true;
 }
 
 // Cierra la sesión actual y borra la cookie
