@@ -62,7 +62,7 @@ export function intervalText(days?: number): string {
 
 // Campos del elemento que se rastrean en el historial de cambios
 const TRACKED: { field: keyof Item; label: string; show?: (v: unknown) => string }[] = [
-  { field: "code", label: "Código" },
+  { field: "code", label: "ID" },
   { field: "name", label: "Nombre" },
   { field: "brand", label: "Marca" },
   { field: "model", label: "Modelo" },

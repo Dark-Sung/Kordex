@@ -22,8 +22,8 @@ export async function GET(_req: Request, { params }: { params: Promise<{ company
   const parentCode = new Map(items.map((i) => [i.id, i.code]));
 
   const header = isStore
-    ? ["SKU", "Nombre", "Categoría", "Marca", "Modelo", "Variante de", "Unidad", "Costo", "Precio", "Stock", "Stock mínimo", "Ubicación"]
-    : ["Código", "Nombre", "Categoría", "Marca", "Modelo", "Variante de", "Unidad", "Cantidad", "Estado", "Responsable", "Serial", "Ubicación", "Notas", "Mantenimiento", "Último mantenimiento"];
+    ? ["ID", "Nombre", "Categoría", "Marca", "Modelo", "Variante de", "Unidad", "Costo", "Precio", "Stock", "Stock mínimo", "Ubicación"]
+    : ["ID", "Nombre", "Categoría", "Marca", "Modelo", "Variante de", "Unidad", "Cantidad", "Estado", "Responsable", "Serial", "Ubicación", "Notas", "Mantenimiento", "Último mantenimiento"];
 
   const lines = items.map((p) =>
     (isStore

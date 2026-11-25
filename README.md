@@ -9,7 +9,7 @@ Aplicación multi‑empresa de control de inventario hecha con **Next.js 15 (App
 | | Tienda | Organización |
 |---|---|---|
 | Para | Negocios que venden productos | Equipos que solo inventarían sus elementos de trabajo |
-| Campos | SKU, costo, precio, stock, stock mínimo, ubicación | Código, cantidad, estado, responsable, serial, ubicación, notas |
+| Campos | ID, costo, precio, stock, stock mínimo, ubicación | ID, cantidad, estado, responsable, serial, ubicación, notas |
 | Resumen | Valor del inventario y lista **Por reponer** | Elementos en buen estado y lista **Requieren atención** |
 | Historial | **Movimientos**: entradas, salidas, ajustes | **Mantenimiento**: mantenimientos hechos y cambios a cada elemento |
 
