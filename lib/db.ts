@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS users (
   name          TEXT NOT NULL,
   email         TEXT NOT NULL UNIQUE COLLATE NOCASE,
   password_hash TEXT NOT NULL,
+  photo         TEXT,
   created_at    TEXT NOT NULL
 );
 
@@ -120,7 +121,7 @@ type TableSpec = {
 };
 
 const TABLES: TableSpec[] = [
-  { collection: "users", table: "users", key: ["id"], fields: ["id", "name", "email", "passwordHash", "createdAt"] },
+  { collection: "users", table: "users", key: ["id"], fields: ["id", "name", "email", "passwordHash", "photo", "createdAt"] },
   { collection: "sessions", table: "sessions", key: ["tokenHash"], fields: ["tokenHash", "userId", "expiresAt"] },
   {
     collection: "loginAttempts",
@@ -205,6 +206,17 @@ function openConnection(): DatabaseSync {
   conn.exec("PRAGMA foreign_keys = ON");
   conn.exec("PRAGMA busy_timeout = 5000");
   conn.exec(SCHEMA);
+  conn.exec("BEGIN IMMEDIATE");
+  try {
+    if (!conn.prepare("PRAGMA table_info(users)").all().some((column) => column.name === "photo")) {
+      conn.exec("ALTER TABLE users ADD COLUMN photo TEXT");
+    }
+    conn.exec("COMMIT");
+  } catch (error) {
+    conn.exec("ROLLBACK");
+    conn.close();
+    throw error;
+  }
   g.__inventarioSqlite = conn;
   return conn;
 }

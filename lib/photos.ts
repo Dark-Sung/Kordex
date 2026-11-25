@@ -27,6 +27,7 @@ function detectExt(buf: Buffer): "jpg" | "png" | "webp" | null {
 
 // Ruta de la carpeta de fotos de una empresa
 export const companyDir = (companyId: string) => path.join(UPLOADS_DIR, companyId);
+export const profilePhotoDir = (userId: string) => path.join(UPLOADS_DIR, "perfiles", userId);
 
 // Verifica si el valor del formulario es un archivo realmente seleccionado
 export function isUpload(v: FormDataEntryValue | null): v is File {
@@ -34,8 +35,8 @@ export function isUpload(v: FormDataEntryValue | null): v is File {
 }
 
 // Guarda una foto en disco y devuelve el nombre del archivo generado
-export async function savePhoto(
-  companyId: string,
+async function savePhotoTo(
+  dir: string,
   file: File,
 ): Promise<{ filename: string } | { error: string }> {
   if (file.size > MAX_PHOTO_BYTES) return { error: "La foto pesa más de 4 MB. Elige una más liviana." };
@@ -43,11 +44,18 @@ export async function savePhoto(
   const ext = detectExt(buf);
   if (!ext) return { error: "La foto debe ser JPG, PNG o WebP." };
 
-  const dir = companyDir(companyId);
   await fs.mkdir(dir, { recursive: true });
   const filename = `${randomUUID()}.${ext}`;
   await fs.writeFile(path.join(dir, filename), buf);
   return { filename };
+}
+
+export const savePhoto = (companyId: string, file: File) => savePhotoTo(companyDir(companyId), file);
+export const saveProfilePhoto = (userId: string, file: File) => savePhotoTo(profilePhotoDir(userId), file);
+
+export async function deleteProfilePhoto(userId: string, filename?: string): Promise<void> {
+  if (!filename || !PHOTO_NAME.test(filename) || !UUID.test(userId)) return;
+  await fs.rm(path.join(profilePhotoDir(userId), filename), { force: true });
 }
 
 // Elimina una foto del disco de forma segura

@@ -7,7 +7,7 @@ import { labelsFor } from "./labels";
 export async function loadCompanyData(companyId: string) {
   const ctx = await requireContext(companyId);
   const db = await readDB();
-  const people = new Map(db.users.map((u) => [u.id, { id: u.id, name: u.name, email: u.email }]));
+  const people = new Map(db.users.map((u) => [u.id, { id: u.id, name: u.name, email: u.email, photo: u.photo }]));
   return {
     ctx,
     l: labelsFor(ctx.company.type),

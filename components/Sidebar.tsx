@@ -3,19 +3,20 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logout } from "@/app/actions/auth";
+import UserAvatar, { type AvatarUser } from "./UserAvatar";
 
 type Props = {
   companyId: string;
   companyName: string;
   typeName: string;
   roleLabel: string;
-  userName: string;
+  user: AvatarUser;
   nav: { href: string; label: string }[];
   exportHref: string;
 };
 
 // Barra lateral de navegación de la empresa
-export default function Sidebar({ companyId, companyName, typeName, roleLabel, userName, nav, exportHref }: Props) {
+export default function Sidebar({ companyId, companyName, typeName, roleLabel, user, nav, exportHref }: Props) {
   const pathname = usePathname();
   const root = `/e/${companyId}`;
   return (
@@ -45,8 +46,11 @@ export default function Sidebar({ companyId, companyName, typeName, roleLabel, u
         <Link href="/empresas" className="nav-link">
           Cambiar de empresa
         </Link>
+        <Link href="/cuenta" className="nav-link">
+          Mi cuenta
+        </Link>
         <div className="side-user">
-          <span className="side-meta">{userName}</span>
+          <span className="user-identity side-meta"><UserAvatar user={user} />{user.name}</span>
           <form action={logout}>
             <button type="submit" className="link-btn">
               Cerrar sesión

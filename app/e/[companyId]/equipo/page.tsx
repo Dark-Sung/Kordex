@@ -1,5 +1,6 @@
 import { addMember, changeMemberRole, removeMember } from "@/app/actions/members";
 import ActionForm from "@/components/ActionForm";
+import UserAvatar from "@/components/UserAvatar";
 import { loadCompanyData } from "@/lib/company-data";
 import { formatDay } from "@/lib/format";
 import { assignableRoles, can, canManageMember, roleDescriptions, roleLabels, roles } from "@/lib/permissions";
@@ -14,9 +15,7 @@ export default async function EquipoPage({ params }: { params: Promise<{ company
 
   const rows = memberships
     .map((m) => ({ m, person: people.get(m.userId) }))
-    .filter((x): x is { m: (typeof memberships)[number]; person: { id: string; name: string; email: string } } =>
-      Boolean(x.person),
-    )
+    .filter((x): x is typeof x & { person: NonNullable<typeof x.person> } => x.person !== undefined)
     .sort((a, b) => a.person.name.localeCompare(b.person.name, "es"));
 
   return (
@@ -45,9 +44,14 @@ export default async function EquipoPage({ params }: { params: Promise<{ company
                 return (
                   <tr key={person.id}>
                     <td>
-                      <span className="strong">{person.name}</span>
-                      {person.id === ctx.user.id && <span className="muted small"> (tú)</span>}
-                      <div className="muted small">{person.email}</div>
+                      <div className="user-identity">
+                        <UserAvatar user={person} />
+                        <div>
+                          <span className="strong">{person.name}</span>
+                          {person.id === ctx.user.id && <span className="muted small"> (tú)</span>}
+                          <div className="muted small">{person.email}</div>
+                        </div>
+                      </div>
                     </td>
                     <td>
                       {editable ? (
