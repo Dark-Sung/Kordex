@@ -694,7 +694,7 @@
         padding: 20px 0;
     }
 }
-/* SECCIÓN DE REGISTRO */
+
 
 .ctaSection {
     background: var(--surface);
@@ -768,7 +768,7 @@
     outline-offset: 4px;
 }
 
-/* PIE DE PÁGINA */
+
 
 .footer {
     background: var(--surface);
@@ -794,7 +794,7 @@
     font-size: 13px;
 }
 
-/* ADAPTACIÓN A PANTALLAS PEQUEÑAS */
+
 
 @media (max-width: 900px) {
     .ctaCard {
@@ -844,7 +844,7 @@
     background: var(--purple-solid-hover);
     border-color: var(--purple-solid-hover);
 }
-/* AJUSTES RESPONSIVE FINALES */
+
 
 @media (max-width: 1100px) {
     .header {
@@ -956,6 +956,7 @@
         line-height: 1.5;
     }
 }
+
 :global(html[data-theme="dark"]) .logo {
     background: #f5efff;
 }
