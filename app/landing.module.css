@@ -816,3 +816,31 @@
         gap: 10px;
     }
 }
+
+.nav {
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.nav a {
+    border: 1px solid #6200ff;
+    border-radius: 6px;
+    padding: 10px 14px;
+    white-space: nowrap;
+    transition: background 0.2s, color 0.2s;
+}
+
+.nav a:hover {
+    background: #6200ff;
+    color: #ffffff;
+}
+
+.nav a:last-child {
+    background: #6200ff;
+    color: #ffffff;
+}
+
+.nav a:last-child:hover {
+    background: #4900c4;
+    border-color: #4900c4;
+}
