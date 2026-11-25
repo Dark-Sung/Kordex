@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import KordexLogo from "@/components/KordexLogo";
 import styles from "./landing.module.css";
 
 export default function Home() {
@@ -9,14 +9,7 @@ export default function Home() {
 
                 <header className={styles.header}>
                     <div className={styles.brand}>
-                        <Image
-                            src="/kordex-logo.png"
-                            alt="Kordex"
-                            width={852}
-                            height={210}
-                            className={styles.logo}
-                            priority
-                        />
+                        <KordexLogo className={styles.logo} priority />
                     </div>
 
                            <nav className={styles.nav}>

@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { redirect } from "next/navigation";
+import KordexLogo from "@/components/KordexLogo";
 import { getCurrentUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -9,7 +10,7 @@ export default async function AuthLayout({ children }: { children: ReactNode }) 
   return (
     <div className="auth-wrap">
       <div className="auth-card">
-        <div className="auth-brand">Inventario</div>
+        <KordexLogo className="auth-brand" priority />
         {children}
       </div>
     </div>
