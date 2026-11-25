@@ -622,6 +622,7 @@ select:focus {
 /* Barra superior (pantallas fuera de una empresa) */
 .topbar {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
@@ -629,13 +630,19 @@ select:focus {
   background: var(--side);
 }
 .topbar-brand {
-  color: #fff;
-  font-weight: 750;
-  font-size: 1.15rem;
-  text-decoration: none;
+  display: block;
+  padding: 0.25rem 0.5rem;
+  background: var(--paper);
+  border-radius: var(--radius);
+}
+.topbar-brand img {
+  display: block;
+  width: 115px;
+  height: auto;
 }
 .topbar-user {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
   color: var(--side-ink);
@@ -694,9 +701,10 @@ select:focus {
   padding: 1.75rem;
 }
 .auth-brand {
-  font-weight: 750;
-  font-size: 1.1rem;
-  color: var(--purple-dark);
+  display: block;
+  width: 160px;
+  max-width: 100%;
+  height: auto;
   margin-bottom: 1rem;
 }
 .auth-sub {
