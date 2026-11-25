@@ -19,15 +19,17 @@ export default function Home() {
                         />
                     </div>
 
-                    <nav className={styles.nav}>
-                        <Link href="/iniciar-sesion">
-                            Iniciar sesión
-                        </Link>
+                           <nav className={styles.nav}>
+                            <Link href="#tipos-inventario">Tipos de inventario</Link>
 
-                        <Link href="/registro">
-                            Crear cuenta
-                        </Link>
-                    </nav>
+                             <Link href="#funciones">Funciones</Link>
+
+                             <Link href="#mantenimiento">Mantenimiento</Link>
+
+                            <Link href="#equipo">Equipo y roles</Link>
+
+                             <Link href="/iniciar-sesion">Iniciar sesión</Link>
+                         </nav>
                 </header>
 
                 <section className={styles.hero}>
@@ -59,11 +61,8 @@ export default function Home() {
                                 Crear cuenta
                             </Link>
 
-                            <Link
-                                href="/iniciar-sesion"
-                                className={styles.secondaryButton}
-                            >
-                                Iniciar sesión
+                            <Link href="/iniciar-sesion" className={styles.secondaryButton}>
+                              Iniciar sesión
                             </Link>
                         </div>
 
