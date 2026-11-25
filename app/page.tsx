@@ -501,6 +501,50 @@ export default function Home() {
         </div>
     </div>
 </section>
+      <section className={styles.ctaSection}>
+    <div className={styles.wrapper}>
+        <div className={styles.ctaCard}>
+
+            <div className={styles.ctaInfo}>
+                <h2>Empieza con tu primer inventario</h2>
+
+                <p>
+                    Crea tu cuenta, registra tu empresa y elige
+                    si es una tienda o una organización.
+                </p>
+            </div>
+
+            <div className={styles.ctaActions}>
+                <Link
+                    href="/registro"
+                    className={styles.ctaPrimary}
+                >
+                    Crear cuenta
+                </Link>
+
+                <Link
+                    href="/iniciar-sesion"
+                    className={styles.ctaSecondary}
+                >
+                    Iniciar sesión
+                </Link>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<footer className={styles.footer}>
+    <div className={styles.wrapper}>
+        <div className={styles.footerContent}>
+            <strong>Kordex</strong>
+
+            <p>
+                Control de inventario para tiendas y organizaciones.
+            </p>
+        </div>
+    </div>
+</footer>
         </main>
     );
 }
