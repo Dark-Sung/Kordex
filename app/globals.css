@@ -621,6 +621,12 @@ select:focus {
   color: var(--ink);
   padding: 0;
 }
+.copy-item-id {
+  color: var(--purple);
+}
+.copy-item-id:hover {
+  color: var(--purple-dark);
+}
 
 /* Barra superior (pantallas fuera de una empresa) */
 .topbar {
