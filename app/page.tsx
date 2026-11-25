@@ -1,5 +1,6 @@
 import Link from "next/link";
 import KordexLogo from "@/components/KordexLogo";
+import ThemeToggle from "@/components/ThemeToggle";
 import styles from "./landing.module.css";
 
 export default function Home() {
@@ -22,6 +23,7 @@ export default function Home() {
                             <Link href="#equipo">Equipo y roles</Link>
 
                              <Link href="/iniciar-sesion">Iniciar sesión</Link>
+                             <ThemeToggle />
                          </nav>
                 </header>
 
