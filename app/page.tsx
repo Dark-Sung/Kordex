@@ -322,6 +322,109 @@ export default function Home() {
         </div>
     </div>
 </section>
+<section id="mantenimiento" className={styles.maintenanceSection}>
+    <div className={styles.wrapper}>
+        <div className={styles.maintenanceGrid}>
+
+            <div className={styles.maintenanceInfo}>
+                <p className={styles.maintenanceLabel}>
+                    TIPO ORGANIZACIÓN
+                </p>
+
+                <h2>
+                    El mantenimiento deja de depender de la memoria
+                </h2>
+
+                <p>
+                    Define cada cuánto necesita mantenimiento
+                    un elemento: cada semana, mes, 3 o 6 meses,
+                    año, o un número de días propio. Kordex
+                    ordena el plan por urgencia y reinicia el
+                    conteo cuando lo confirmas.
+                </p>
+
+                <p>
+                    Además, cada vez que cambias el estado,
+                    el responsable o la ubicación de un elemento,
+                    el historial anota qué cambió y de qué valor
+                    a cuál.
+                </p>
+            </div>
+
+            <div className={styles.maintenanceCard}>
+
+                <p className={styles.maintenanceCardTitle}>
+                    PLAN DE MANTENIMIENTO · DATOS DE EJEMPLO
+                </p>
+
+                <div className={styles.maintenanceRow}>
+                    <div>
+                        <strong>Extintor multipropósito</strong>
+                        <small>Bodega · Cada 6 meses</small>
+                    </div>
+
+                    <div className={styles.maintenanceActions}>
+                        <span className={styles.overdue}>
+                            Vencido
+                        </span>
+                        <span className={styles.doneButton}>
+                            Marcar hecho
+                        </span>
+                    </div>
+                </div>
+
+                <div className={styles.maintenanceRow}>
+                    <div>
+                        <strong>Proyector portátil</strong>
+                        <small>Sala de reuniones · Cada 3 meses</small>
+                    </div>
+
+                    <div className={styles.maintenanceActions}>
+                        <span className={styles.upcoming}>
+                            Próximo
+                        </span>
+                        <span className={styles.doneButton}>
+                            Marcar hecho
+                        </span>
+                    </div>
+                </div>
+
+                <div className={styles.maintenanceRow}>
+                    <div>
+                        <strong>Impresora láser</strong>
+                        <small>Oficina · Cada mes</small>
+                    </div>
+
+                    <div className={styles.maintenanceActions}>
+                        <span className={styles.upcoming}>
+                            Próximo
+                        </span>
+                        <span className={styles.doneButton}>
+                            Marcar hecho
+                        </span>
+                    </div>
+                </div>
+
+                <div className={styles.maintenanceRow}>
+                    <div>
+                        <strong>Router principal</strong>
+                        <small>Oficina · Cada año</small>
+                    </div>
+
+                    <div className={styles.maintenanceActions}>
+                        <span className={styles.upToDate}>
+                            Al día
+                        </span>
+                        <span className={styles.doneButton}>
+                            Marcar hecho
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
         </main>
     );
 }
