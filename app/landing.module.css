@@ -694,7 +694,7 @@
         padding: 20px 0;
     }
 }
-/* SECCIÓN DE REGISTRO */
+
 
 .ctaSection {
     background: #ffffff;
@@ -768,7 +768,7 @@
     outline-offset: 4px;
 }
 
-/* PIE DE PÁGINA */
+
 
 .footer {
     background: #ffffff;
@@ -794,7 +794,7 @@
     font-size: 13px;
 }
 
-/* ADAPTACIÓN A PANTALLAS PEQUEÑAS */
+
 
 @media (max-width: 900px) {
     .ctaCard {
@@ -844,7 +844,7 @@
     background: #4900c4;
     border-color: #4900c4;
 }
-/* AJUSTES RESPONSIVE FINALES */
+
 
 @media (max-width: 1100px) {
     .header {
