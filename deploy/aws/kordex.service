@@ -1,0 +1,21 @@
+[Unit]
+Description=Kordex
+Wants=network-online.target
+After=network-online.target
+RequiresMountsFor=/var/lib/kordex
+ConditionPathIsMountPoint=/var/lib/kordex
+
+[Service]
+User=kordex
+Group=kordex
+WorkingDirectory=/opt/kordex/current
+Environment=NODE_ENV=production
+Environment=NEXT_TELEMETRY_DISABLED=1
+Environment=HOSTNAME=127.0.0.1
+Environment=PORT=3000
+Environment=DATA_DIR=/var/lib/kordex
+ExecStart=/usr/bin/node server.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
