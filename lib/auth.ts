@@ -29,7 +29,7 @@ export async function startSession(userId: string, expectedPasswordHash?: string
   (await cookies()).set(COOKIE, token, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === "production" && process.env.KORDEX_ALLOW_HTTP_SESSION !== "1",
     path: "/",
     expires,
   });
