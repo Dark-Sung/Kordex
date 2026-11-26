@@ -28,7 +28,7 @@ jobs:
       AWS_DEPLOY_ROLE_ARN: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
       NEXT_TELEMETRY_DISABLED: "1"
       KORDEX_STANDALONE: "1"
-      DATA_DIR: ${{ runner.temp }}/kordex-ci-data
+      PACKAGE: ${{ runner.temp }}/kordex.tar.gz
 
     steps:
       - uses: actions/checkout@v6
