@@ -111,3 +111,15 @@ lib/
 - Kordex guarda SQLite y las fotos en el sistema de archivos. Define `DATA_DIR` para elegir otra carpeta. Para respaldar ambos, detén la aplicación y copia la carpeta de datos completa.
 - SQLite aguanta bien un servidor con decenas de usuarios. Para más carga o varios servidores, cambia `lib/db.ts` por PostgreSQL; las páginas y acciones solo dependen de `readDB()` y `mutate()`. El módulo `node:sqlite` aún está marcado como experimental en Node: si prefieres algo más establecido, `better-sqlite3` tiene casi la misma interfaz y solo habría que cambiar la conexión en `lib/db.ts`.
 - Fechas y moneda están configuradas para Colombia (`es-CO`, COP, `America/Bogota`) en `lib/format.ts`.
+
+## Taller de AWS Academy
+
+El flujo es **GitHub Actions → S3 privado → EC2 → ALB**. Kordex se entrega como un paquete ejecutable de Next.js. EC2 consulta la versión publicada cada minuto y el ALB comprueba `/health.html`.
+
+1. En el entorno de GitHub `aws-production` agrega los secretos `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` y `S3_BUCKET`. Los tres primeros vienen de la sesión activa de AWS Academy. Actualízalos al reiniciar el laboratorio.
+2. Crea el bucket privado en `us-east-1`. Usa una AMI Amazon Linux 2023 x86-64 con AWS CLI, el perfil `LabInstanceProfile` y el script `deploy/aws/user-data.sh` en los datos de usuario de la plantilla. Sustituye `NOMBRE-DEL-BUCKET` por el valor del secreto `S3_BUCKET`. La instancia necesita salida HTTP y HTTPS para instalar paquetes y leer S3.
+3. Adjunta un EBS en la misma zona que la instancia, móntalo en `/var/lib/kordex` y configura su montaje al reiniciar. Antes de iniciar con datos previos, restaura SQLite y `uploads/` con el servicio detenido. Configura el grupo con **una instancia activa** mientras se use SQLite local.
+4. Configura el ALB en dos subredes de zonas diferentes. El grupo de destino apunta a EC2 por HTTP **3000** y comprueba `/health.html`. El grupo de seguridad de EC2 admite 3000 solo desde el grupo del ALB. Para el acceso autenticado usa un listener HTTPS con un certificado válido para el dominio.
+5. Integra el workflow a `main` y verifica que GitHub publique el paquete. En la instancia puedes consultar `/var/log/kordex-sync.log` o ejecutar `sudo /usr/local/sbin/kordex-sync`. Prueba primero el destino y confirma que un registro con foto se conserva tras publicar otra versión.
+
+El paquete de S3 contiene el código y sus recursos estáticos. Los datos de la aplicación se conservan en EBS. Si Auto Scaling reemplaza EC2, vuelve a montar el volumen original o restaura una copia antes de aceptar tráfico.

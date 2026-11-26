@@ -1,0 +1,63 @@
+name: Publicar Kordex en S3
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kordex-s3
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-22.04
+    environment: aws-production
+    env:
+      KORDEX_STANDALONE: "1"
+      NEXT_TELEMETRY_DISABLED: "1"
+      DATA_DIR: ${{ runner.temp }}/kordex-data
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Instalar y compilar
+        run: |
+          npm ci
+          npm run build
+      - name: Empaquetar y probar el servidor
+        run: |
+          set -euo pipefail
+          cp -a public .next/standalone/
+          cp -a .next/static .next/standalone/.next/
+          tar -C .next/standalone -czf "$RUNNER_TEMP/kordex.tar.gz" .
+          HOSTNAME=127.0.0.1 PORT=3100 node .next/standalone/server.js &
+          pid=$!
+          trap 'kill "$pid" 2>/dev/null || true' EXIT
+          curl -fsS --retry 10 --retry-connrefused --retry-delay 1 --max-time 5 http://127.0.0.1:3100/health.html
+          curl -fsS --max-time 5 http://127.0.0.1:3100/iniciar-sesion >/dev/null
+      - name: Usar la sesión temporal de AWS Academy
+        uses: aws-actions/configure-aws-credentials@v6.3.1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+      - name: Publicar la versión para EC2
+        env:
+          BUCKET: ${{ secrets.S3_BUCKET }}
+        run: |
+          set -euo pipefail
+          : "${BUCKET:?Falta el secreto S3_BUCKET}"
+          release="$GITHUB_SHA-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          aws s3 cp "$RUNNER_TEMP/kordex.tar.gz" "s3://$BUCKET/releases/$release.tar.gz"
+          printf '%s\n' "$release" > "$RUNNER_TEMP/current.txt"
+          aws s3 cp "$RUNNER_TEMP/current.txt" "s3://$BUCKET/releases/current.txt"
