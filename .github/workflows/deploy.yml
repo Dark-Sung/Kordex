@@ -1,0 +1,84 @@
+name: Despliegue de Kordex en EC2
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: kordex-aws
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-22.04
+    environment: aws-production
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      AWS_ASG_NAME: ${{ vars.AWS_ASG_NAME }}
+      AWS_BUCKET: ${{ vars.AWS_BUCKET }}
+      AWS_DEPLOY_ROLE_ARN: ${{ vars.AWS_DEPLOY_ROLE_ARN }}
+      NEXT_TELEMETRY_DISABLED: "1"
+      KORDEX_STANDALONE: "1"
+      PACKAGE: ${{ runner.temp }}/kordex.tar.gz
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Comprobar la configuración del entorno
+        run: |
+          : "${AWS_REGION:?Falta AWS_REGION}"
+          : "${AWS_ASG_NAME:?Falta AWS_ASG_NAME}"
+          : "${AWS_BUCKET:?Falta AWS_BUCKET}"
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Instalar, compilar y comprobar los tipos
+        run: |
+          npm ci
+          npm run build
+
+      - name: Preparar y probar la aplicación de producción
+        run: |
+          set -euo pipefail
+          cp -a public .next/standalone/
+          cp -a .next/static .next/standalone/.next/
+          PORT=3100 HOSTNAME=127.0.0.1 node .next/standalone/server.js &
+          pid=$!
+          trap 'kill "$pid" 2>/dev/null || true' EXIT
+          curl --fail --silent --show-error --retry 10 --retry-connrefused --retry-delay 1 \
+            --max-time 5 http://127.0.0.1:3100/ >/dev/null
+          curl --fail --silent --show-error --max-time 5 http://127.0.0.1:3100/iniciar-sesion >/dev/null
+          tar -C .next/standalone -czf "$RUNNER_TEMP/kordex.tar.gz" .
+
+      - name: Conectarse a AWS mediante OIDC
+        if: env.AWS_DEPLOY_ROLE_ARN != ''
+        uses: aws-actions/configure-aws-credentials@v6.3.1
+        with:
+          role-to-assume: ${{ env.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Conectarse a AWS Academy con credenciales temporales
+        if: env.AWS_DEPLOY_ROLE_ARN == ''
+        uses: aws-actions/configure-aws-credentials@v6.3.1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Publicar el paquete en S3 y actualizar EC2
+        run: bash deploy/aws/deploy-asg.sh

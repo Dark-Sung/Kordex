@@ -105,6 +105,19 @@ lib/
 
 ## Seguridad y despliegue
 
+### Despliegue en AWS
+
+El workflow `.github/workflows/ci.yml` compila los cambios de un pull request. Al actualizar `main`, `.github/workflows/deploy.yml` compila Kordex, comprueba que la página pública y el inicio de sesión respondan, publica el paquete de Next.js en S3 y lo instala con AWS Systems Manager Run Command en la instancia activa del grupo Auto Scaling. También puede ejecutarse desde la pestaña **Actions**.
+
+1. Crea el entorno de GitHub `aws-production` para `main` y configura `AWS_REGION`, `AWS_BUCKET` y `AWS_ASG_NAME`. Para usar OIDC define `AWS_DEPLOY_ROLE_ARN`. Si AWS Academy no permite OIDC, el workflow admite los secretos `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` y `AWS_SESSION_TOKEN` de una sesión temporal vigente. La identidad de despliegue necesita publicar en `releases/`, consultar el ASG, enviar el comando y consultar su resultado.
+2. Prepara una instancia Linux x86-64 compatible con Ubuntu 22.04, Node.js 22 en `/usr/bin/node`, AWS CLI y SSM Agent conectado. El perfil de instancia debe permitir uso de SSM, lectura de `releases/` y escritura de `backups/` y `releases/current.txt` en el bucket privado. Instala `deploy/aws/kordex.service` como `/etc/systemd/system/kordex.service`, crea el usuario y grupo `kordex` y ejecuta `sudo systemctl daemon-reload`.
+3. Monta EBS en `/var/lib/kordex` y dale escritura al usuario `kordex`. Configura el punto de montaje y su recuperación en la plantilla de lanzamiento antes de confiar en el reemplazo de una instancia. Usa HTTPS mediante un proxy inverso en EC2 hacia `127.0.0.1:3000`, ya que la sesión de producción usa una cookie segura.
+4. Configura el ASG con capacidad mínima y deseada de 1. Puedes conservar el máximo de 2 del diagrama, con las políticas de aumento deshabilitadas mientras la base sea SQLite local. El workflow exige una sola instancia activa. Antes de cambiar de versión, se detiene Kordex y se respalda el volumen de datos, incluidas las fotos, en S3. Si la nueva versión falla la comprobación, se vuelve a iniciar la versión anterior cuando existe.
+
+El despliegue actual conserva SQLite y las fotos de la aplicación en EBS. S3 recibe los paquetes de código y los respaldos de ambos. El acceso directo a imágenes en S3 y los reportes PDF o Excel del diagrama requieren implementación adicional. Kordex actualmente exporta CSV.
+
+Para recuperar una instancia reemplazada, vuelve a montar el volumen original o restaura un respaldo de `backups/` en un volumen vacío, con el servicio detenido. Lee el identificador de `releases/current.txt` en S3, descarga `releases/<identificador>/install-release.sh` y ejecútalo como root con el nombre del bucket y el identificador. Confirma que el acceso HTTPS y los datos restaurados estén disponibles antes de dirigir tráfico a la instancia.
+
 - Cada acción del servidor revisa en el servidor que la persona pertenezca a la empresa y que su rol permita la acción; ocultar un botón en pantalla no es la única barrera. Todos los datos se filtran por empresa.
 - Las fotos se validan por su contenido (no solo por la extensión) y no están en una carpeta pública.
 - Hay bloqueo por intentos fallidos, pero **no hay recuperación de contraseña por correo**. Agrégala antes de exponerlo en internet, y sírvelo siempre con HTTPS. Si usas un proxy inverso, haz que envíe la cabecera `X-Forwarded-For` para que el límite por IP funcione.

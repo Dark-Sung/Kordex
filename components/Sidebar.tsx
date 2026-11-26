@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logout } from "@/app/actions/auth";
+import ThemeToggle from "./ThemeToggle";
 import UserAvatar, { type AvatarUser } from "./UserAvatar";
 
 type Props = {
@@ -49,6 +50,7 @@ export default function Sidebar({ companyId, companyName, typeName, roleLabel, u
         <Link href="/cuenta" className="nav-link">
           Mi cuenta
         </Link>
+        <ThemeToggle />
         <div className="side-user">
           <span className="user-identity side-meta"><UserAvatar user={user} />{user.name}</span>
           <form action={logout}>
