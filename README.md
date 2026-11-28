@@ -103,24 +103,23 @@ lib/
   photos.ts        Validación y guardado de fotos
 ```
 
-## Seguridad y despliegue
-
-### Despliegue en AWS
-
-El workflow `.github/workflows/ci.yml` compila los cambios de un pull request. Al actualizar `main`, `.github/workflows/deploy-aws.yml` compila Kordex, comprueba que la página pública y el inicio de sesión respondan, publica el paquete de Next.js en S3 y lo instala con AWS Systems Manager Run Command en la instancia activa del grupo Auto Scaling. También puede ejecutarse desde la pestaña **Actions**.
-
-1. Crea el entorno de GitHub `aws-production` para `main` y configura `AWS_REGION`, `AWS_BUCKET`, `AWS_ASG_NAME` y `AWS_DEPLOY_ROLE_ARN`. El rol OIDC de GitHub necesita publicar en el prefijo `releases/`, consultar el ASG, enviar el comando a su instancia y consultar el resultado. Verifica que el laboratorio de AWS Academy permita configurar el rol.
-2. Prepara una instancia Linux x86-64 compatible con Ubuntu 22.04, Node.js 22 en `/usr/bin/node`, AWS CLI y SSM Agent conectado. El perfil de instancia debe permitir uso de SSM, lectura de `releases/` y escritura de `backups/` y `releases/current.txt` en el bucket privado. Instala `deploy/aws/kordex.service` como `/etc/systemd/system/kordex.service`, crea el usuario y grupo `kordex` y ejecuta `sudo systemctl daemon-reload`.
-3. Monta EBS en `/var/lib/kordex` y dale escritura al usuario `kordex`. Configura el punto de montaje y su recuperación en la plantilla de lanzamiento antes de confiar en el reemplazo de una instancia. Usa HTTPS mediante un proxy inverso en EC2 hacia `127.0.0.1:3000`, ya que la sesión de producción usa una cookie segura.
-4. Configura el ASG con capacidad mínima y deseada de 1. Puedes conservar el máximo de 2 del diagrama, con las políticas de aumento deshabilitadas mientras la base sea SQLite local. El workflow exige una sola instancia activa. Antes de cambiar de versión, se detiene Kordex y se respalda el volumen de datos, incluidas las fotos, en S3. Si la nueva versión falla la comprobación, se vuelve a iniciar la versión anterior cuando existe.
-
-El despliegue actual conserva SQLite y las fotos de la aplicación en EBS. S3 recibe los paquetes de código y los respaldos de ambos. El acceso directo a imágenes en S3 y los reportes PDF o Excel del diagrama requieren implementación adicional. Kordex actualmente exporta CSV.
-
-Para recuperar una instancia reemplazada, vuelve a montar el volumen original o restaura un respaldo de `backups/` en un volumen vacío, con el servicio detenido. Lee el identificador de `releases/current.txt` en S3, descarga `releases/<identificador>/install-release.sh` y ejecútalo como root con el nombre del bucket y el identificador. Confirma que el acceso HTTPS y los datos restaurados estén disponibles antes de dirigir tráfico a la instancia.
+## Seguridad y almacenamiento
 
 - Cada acción del servidor revisa en el servidor que la persona pertenezca a la empresa y que su rol permita la acción; ocultar un botón en pantalla no es la única barrera. Todos los datos se filtran por empresa.
 - Las fotos se validan por su contenido (no solo por la extensión) y no están en una carpeta pública.
 - Hay bloqueo por intentos fallidos, pero **no hay recuperación de contraseña por correo**. Agrégala antes de exponerlo en internet, y sírvelo siempre con HTTPS. Si usas un proxy inverso, haz que envíe la cabecera `X-Forwarded-For` para que el límite por IP funcione.
-- El almacenamiento es el sistema de archivos (SQLite + fotos): sirve para un servidor propio o un VPS con disco persistente (usa `DATA_DIR` para apuntar a él). **No funciona en hosting serverless** (por ejemplo Vercel) porque allí el disco no es persistente. Haz copias de seguridad de la carpeta `data/` completa (con el servidor detenido, o copiando también los archivos `-wal` y `-shm`).
+- Kordex guarda SQLite y las fotos en el sistema de archivos. Define `DATA_DIR` para elegir otra carpeta. Para respaldar ambos, detén la aplicación y copia la carpeta de datos completa.
 - SQLite aguanta bien un servidor con decenas de usuarios. Para más carga o varios servidores, cambia `lib/db.ts` por PostgreSQL; las páginas y acciones solo dependen de `readDB()` y `mutate()`. El módulo `node:sqlite` aún está marcado como experimental en Node: si prefieres algo más establecido, `better-sqlite3` tiene casi la misma interfaz y solo habría que cambiar la conexión en `lib/db.ts`.
 - Fechas y moneda están configuradas para Colombia (`es-CO`, COP, `America/Bogota`) en `lib/format.ts`.
+
+## Taller de AWS Academy
+
+El flujo es **GitHub Actions → S3 privado → EC2 → ALB**. Kordex se entrega como un paquete ejecutable de Next.js. EC2 consulta la versión publicada cada minuto y el ALB comprueba `/health.html`.
+
+1. En el entorno de GitHub `aws-production` agrega los secretos `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_SESSION_TOKEN` y `S3_BUCKET`. Los tres primeros vienen de la sesión activa de AWS Academy. Actualízalos al reiniciar el laboratorio.
+2. Crea el bucket privado en `us-east-1`. Usa una AMI Amazon Linux 2023 x86-64 con AWS CLI, el perfil `LabInstanceProfile` y el script `deploy/aws/user-data.sh` en los datos de usuario de la plantilla. Sustituye `NOMBRE-DEL-BUCKET` por el valor del secreto `S3_BUCKET`. La instancia necesita salida HTTP y HTTPS para instalar paquetes y leer S3.
+3. Adjunta un EBS en la misma zona que la instancia, móntalo en `/var/lib/kordex` y configura su montaje al reiniciar. Antes de iniciar con datos previos, restaura SQLite y `uploads/` con el servicio detenido. Configura el grupo con **una instancia activa** mientras se use SQLite local.
+4. Configura el ALB en dos subredes de zonas diferentes. El grupo de destino apunta a EC2 por HTTP **3000** y comprueba `/health.html`. El grupo de seguridad de EC2 admite 3000 solo desde el grupo del ALB. Para el acceso autenticado usa un listener HTTPS con un certificado válido para el dominio.
+5. Integra el workflow a `main` y verifica que GitHub publique el paquete. En la instancia puedes consultar `/var/log/kordex-sync.log` o ejecutar `sudo /usr/local/sbin/kordex-sync`. Prueba primero el destino y confirma que un registro con foto se conserva tras publicar otra versión.
+
+El paquete de S3 contiene el código y sus recursos estáticos. Los datos de la aplicación se conservan en EBS. Si Auto Scaling reemplaza EC2, vuelve a montar el volumen original o restaura una copia antes de aceptar tráfico.
